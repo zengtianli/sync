@@ -1,0 +1,24 @@
+# skhd 快捷键配置文件
+# 窗口定位快捷键
+
+# DEBUG: 测试 skhd 是否能接收按键（ctrl+shift+t 写入文件）
+ctrl + shift - t : echo "$(date) - app: $(yabai -m query --windows --window | jq -r '.app')" >> /tmp/skhd_debug.log
+
+# 上半屏四等分
+ctrl + shift - y : /Users/tianli/Documents/sync/window-managers/yabai/scripts/window/position.sh grid top 1
+ctrl + shift - u : /Users/tianli/Documents/sync/window-managers/yabai/scripts/window/position.sh grid top 2
+ctrl + shift - i : /Users/tianli/Documents/sync/window-managers/yabai/scripts/window/position.sh grid top 3
+ctrl + shift - o : /Users/tianli/Documents/sync/window-managers/yabai/scripts/window/position.sh grid top 4
+
+# 下半屏四等分
+ctrl + shift - h : /Users/tianli/Documents/sync/window-managers/yabai/scripts/window/position.sh grid bottom 1
+ctrl + shift - j : /Users/tianli/Documents/sync/window-managers/yabai/scripts/window/position.sh grid bottom 2
+ctrl + shift - k : /Users/tianli/Documents/sync/window-managers/yabai/scripts/window/position.sh grid bottom 3
+ctrl + shift - l : /Users/tianli/Documents/sync/window-managers/yabai/scripts/window/position.sh grid bottom 4
+
+# 左右分屏
+ctrl + shift - g : /Users/tianli/Documents/sync/window-managers/yabai/scripts/window/position.sh left
+ctrl + shift - 0x29 : /Users/tianli/Documents/sync/window-managers/yabai/scripts/window/position.sh right
+
+# 全屏
+ctrl + shift - space : /Users/tianli/Documents/sync/window-managers/yabai/scripts/window/position.sh full

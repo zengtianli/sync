@@ -1,0 +1,11 @@
+Hazel.app
+MessAuto.app
+Hammerspoon.app
+BLEUnlock.app
+PastePal.app
+CleanShot X.app
+Cardinal.app
+Keyboard Maestro.app
+rcmd.app
+Shadowrocket.app
+Itsycal.app

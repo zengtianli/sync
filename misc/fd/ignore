@@ -1,0 +1,8 @@
+/nix/
+/System/
+/Library/
+/private/
+/usr/
+/Users/tianli/Library/*
+/Users/tianli/!/Library/CloudStorage/
+/Users/tianli/**/*.photoslibrary/

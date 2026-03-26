@@ -1,0 +1,139 @@
+# Yazi 配置迁移计划
+
+## 🚨 当前问题
+
+`~/.config/yazi` 现在是 **yazi 源代码**（yazi-config crate），不是配置文件！
+这会导致 yazi 无法启动。
+
+```
+~/.config/yazi/
+├── Cargo.toml      # ← 这是 Rust 包配置，不是 yazi 配置！
+├── src/            # ← 源代码目录
+├── preset/         # ← 预设配置
+└── README.md
+```
+
+而 `sync/yazi` 是你的用户配置：
+```
+sync/yazi/
+├── init.lua        # ← 正确的配置文件
+├── yazi.toml
+├── keymap.toml
+├── theme.toml
+├── plugins/
+└── ...
+```
+
+---
+
+## 📋 安全迁移步骤
+
+### 步骤 1: 备份当前 ~/.config/yazi（源代码）
+
+```bash
+mv ~/.config/yazi ~/.config/yazi-source-backup
+```
+
+### 步骤 2: 创建全新的配置目录
+
+```bash
+mkdir ~/.config/yazi
+```
+
+### 步骤 3: 逐个复制配置文件（不是软链接）测试
+
+先复制最小配置，确保 yazi 能启动：
+
+```bash
+# 3.1 复制主配置
+cp ~/Documents/sync/yazi/yazi.toml ~/.config/yazi/
+
+# 测试: yazi 应该能启动（用默认快捷键）
+```
+
+```bash
+# 3.2 复制快捷键
+cp ~/Documents/sync/yazi/keymap.toml ~/.config/yazi/
+
+# 测试: yazi 快捷键应该生效
+```
+
+```bash
+# 3.3 复制主题
+cp ~/Documents/sync/yazi/theme.toml ~/.config/yazi/
+
+# 测试: yazi 主题应该生效
+```
+
+```bash
+# 3.4 复制插件配置
+cp ~/Documents/sync/yazi/init.lua ~/.config/yazi/
+cp ~/Documents/sync/yazi/package.toml ~/.config/yazi/
+cp -r ~/Documents/sync/yazi/plugins ~/.config/yazi/
+
+# 测试: yazi 插件应该生效（git 状态、书签等）
+```
+
+```bash
+# 3.5 复制其他文件
+cp ~/Documents/sync/yazi/starship.toml ~/.config/yazi/
+cp ~/Documents/sync/yazi/bookmark ~/.config/yazi/
+```
+
+### 步骤 4: 确认一切正常后，改用软链接
+
+如果步骤 3 全部测试通过：
+
+```bash
+# 删除 ~/.config/yazi（刚复制的）
+rm -rf ~/.config/yazi
+
+# 创建软链接
+ln -s ~/Documents/sync/yazi ~/.config/yazi
+
+# 测试: yazi 应该完全正常
+```
+
+---
+
+## ⚠️ 可能导致死机的原因
+
+1. **插件版本不兼容** - plugins/ 里的插件可能和当前 yazi 版本不匹配
+2. **init.lua 语法错误** - Lua 配置有错误会导致崩溃
+3. **keymap.toml 格式错误** - 快捷键配置有问题
+
+---
+
+## 🔍 排查方法
+
+如果某一步 yazi 崩溃，回退到上一步：
+
+```bash
+# 例如：复制 init.lua 后崩溃
+rm ~/.config/yazi/init.lua
+rm -rf ~/.config/yazi/plugins
+
+# yazi 应该恢复正常（只是没有插件）
+```
+
+然后检查是哪个插件有问题：
+
+```bash
+# 一个一个插件测试
+cp -r ~/Documents/sync/yazi/plugins/git.yazi ~/.config/yazi/plugins/
+# 测试...
+
+cp -r ~/Documents/sync/yazi/plugins/smart-enter.yazi ~/.config/yazi/plugins/
+# 测试...
+```
+
+---
+
+## ✅ 确认后我执行
+
+1. 备份 ~/.config/yazi 源代码
+2. 创建新的 ~/.config/yazi 目录
+3. 逐步复制配置，每步测试
+4. 全部通过后改用软链接
+
+**确认执行步骤 1-2？**（先备份和创建目录）

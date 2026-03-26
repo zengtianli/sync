@@ -1,0 +1,111 @@
+" 设置 leader 键
+let mapleader = " "
+" 基本的键映射
+nnoremap U <C-r>
+nnoremap S :w<CR>
+nnoremap Q :q<CR>
+vnoremap <M-j> J
+nnoremap ; :
+vnoremap ; :
+nnoremap ` ~
+vnoremap ` ~
+nnoremap K 15k
+vnoremap K 15k
+nnoremap J 15j
+vnoremap J 15j
+nnoremap <A-j> J
+vnoremap <A-j> J
+nnoremap W 5w
+vnoremap W 5w
+nnoremap B 5b
+vnoremap B 5b
+nnoremap H 0
+vnoremap H 0
+nnoremap L $
+vnoremap L $
+nnoremap <C-i> <C-o>
+vnoremap <C-i> <C-o>
+nnoremap <C-o> <C-i>
+vnoremap <C-o> <C-i>
+nnoremap ,. %
+vnoremap ,. %
+" 窗口管理
+nnoremap <leader>w <C-w>w
+nnoremap <leader>sk <C-w>k
+nnoremap <leader>sj <C-w>j
+nnoremap <leader>sh <C-w>h
+nnoremap <leader>sl <C-w>l
+nnoremap qf <C-w>o
+nnoremap s <nop>
+nnoremap sk :set nosplitbelow<CR>:split<CR>:set splitbelow<CR>
+nnoremap sj :set splitbelow<CR>:split<CR>
+nnoremap sh :set nosplitright<CR>:vsplit<CR>:set splitright<CR>
+nnoremap sl :set splitright<CR>:vsplit<CR>
+" 一些特殊功能的简单映射，可能需要检查或修改以适应 IdeaVim 的支持
+nnoremap <leader><CR> :nohlsearch<CR>
+" 删除不包含指定字符集的所有行 (需要测试IdeaVim对Unicode正则表达式的支持)
+nnoremap <leader>rv :g/^[^a-zA-Z0-9\u4e00-\u9fa5\[\]\(\)\{\}*`,.;:]*$/d<CR>
+" 删除空行
+nnoremap <leader>rb :g/^\s*$/d<CR>
+" 删除行尾空格
+nnoremap <leader>rl :%s/\s*$//g<CR>
+" 删除超过一个的连续空格
+nnoremap <leader>rk :%s/\s\+//g<CR>
+" 删除以 # 开头的行（通常用于删除注释）
+nnoremap <leader>ro :g/^\s*\#\s*.*$/d<CR>
+" Code Folding
+map <leader>o <Action>(CollapseRegion)
+map <leader>O <Action>(ExpandRegion)
+map <leader>zo <Action>(CollapseAllRegions)
+map <leader>zO <Action>(ExpandAllRegions)
+" Code Completion
+map <leader>mc <Action>(CodeCompletion)
+map <leader>ms <Action>(SmartTypeCompletion)
+" Code Documentation
+map <leader>d <Action>(QuickImplementations)
+map <leader>D <Action>(QuickJavaDoc)
+" map <A-d> <Action>(QuickImplementations)
+" map <C-A-d> <Action>(QuickJavaDoc)
+map <leader>gd <Action>(GotoDeclaration)
+" Code Formatting
+map <leader>rf <Action>(ReformatCode)
+map <leader>rs <Action>(ShowReformatFileDialog)
+" error
+map <leader>en <Action>(GotoNextError)
+map <leader>ed <Action>(ShowErrorDescription)
+" Code Refactoring
+map <leader>rr <Action>(Refactorings.QuickListPopupAction)
+map <leader>rn <Action>(RenameElement)
+map <leader>xv <Action>(IntroduceVariable)
+map <leader>xm <Action>(ExtractMethod)
+" Code Selection
+map <C-k> <Action>(EditorSelectWord)
+map <C-j> <Action>(EditorUnSelectWord)
+map <C-n> <Action>(SelectNextOccurrence)
+map <C-S-n> <Action>(UnselectPreviousOccurrence)
+map <C-D-n> <Action>(SelectAllOccurrences)
+" Comments
+map <leader>cn <Action>(CommentByLineComment)
+" Intentions
+map <leader>ca <Action>(ShowIntentionActions)
+map <leader>fu <Action>(FindUsages)
+map <leader>fs <Action>(FileStructurePopup)
+map <leader>ft <Action>(ActivateStructureToolWindow)
+map <leader>ru <Action>(Run)
+map <leader>bp <Action>(ToggleLineBreakpoint)
+map <leader>bu <Action>(Debug)
+map <leader>qe <Action>(QuickEvaluateExpression)
+set ideajoin
+" Function selection
+map af <Action>(MethodSelection)
+map if <Action>(MethodInnerSelection)
+" Class selection
+map ac <Action>(ClassSelection)
+map ic <Action>(ClassInnerSelection)
+" Scope selection (e.g., loop, conditional)
+map as <Action>(ScopeSelection)
+" Parameter selection
+map ap <Action>(ParameterSelection)
+nnoremap Y "*y
+vnoremap Y "*y
+source $HOME/.config/nvim/cursor_for_qwerty.vim

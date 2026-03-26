@@ -1,0 +1,101 @@
+#!/usr/bin/env sh
+
+# Yabai 主配置文件
+# 加载必要的配置文件
+CONFIG_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "${CONFIG_DIR}/apps.conf"
+source "${CONFIG_DIR}/spaces.conf"
+source "${CONFIG_DIR}/indicator.conf"
+
+# 加载脚本附加组件
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+sudo yabai --load-sa
+
+# 基础配置
+GENERAL=(
+    external_bar all:"0":0
+    split_type auto
+    split_ratio 0.5
+    auto_balance off
+    insert_feedback_color 0xff282a36
+)
+
+# 布局配置
+LAYOUT=(
+    layout float
+    top_padding 1
+    bottom_padding 1
+    left_padding 1
+    right_padding 1
+    window_gap 1
+)
+
+# 窗口配置
+WINDOWS=(
+    window_placement second_child
+    window_shadow float
+    window_opacity off
+    active_window_opacity 1.0
+    normal_window_opacity 0.97
+    window_opacity_duration 0.15
+    window_animation_duration 0.0
+    window_origin_display cursor
+)
+
+# 鼠标配置
+MOUSE=(
+    mouse_modifier alt
+    mouse_action1 move
+    mouse_action2 resize
+    mouse_drop_action swap
+    focus_follows_mouse off
+    mouse_follows_focus off
+)
+
+# 静默配置（完全不影响现有窗口）
+apply_silent_configs() {
+    echo "正在静默启动 Yabai（不影响现有窗口）..."
+    
+    # 最小化配置，只设置必要的基础选项
+    yabai -m config layout float
+    yabai -m config auto_balance off
+    
+    # 鼠标配置（允许拖拽移动窗口）
+    yabai -m config mouse_modifier alt
+    yabai -m config mouse_action1 move
+    yabai -m config mouse_action2 resize
+    yabai -m config focus_follows_mouse off
+    yabai -m config mouse_follows_focus off
+    
+    # 不设置任何边距、间隙或其他可能影响窗口布局的选项
+    # 不应用任何窗口规则、空间规则或透明度设置
+    
+    echo "Yabai 静默启动完成（现有窗口保持不变）"
+}
+
+# 完整配置（影响现有窗口）
+apply_full_configs() {
+    echo "正在应用完整 Yabai 配置..."
+    
+    # 应用基础配置
+    yabai -m config "${GENERAL[@]}"
+    yabai -m config "${LAYOUT[@]}"
+    yabai -m config "${WINDOWS[@]}"
+    yabai -m config "${MOUSE[@]}"
+    
+    # 应用应用程序规则
+    reload_app_rules
+    
+    # 应用空间规则
+    reload_space_rules
+    
+    # 应用指示器信号
+    reload_indicator_signals
+    
+    echo "Yabai 完整配置应用完成"
+}
+
+# 初始化配置 - 使用静默模式
+echo "正在初始化 Yabai..."
+apply_silent_configs
+echo "Yabai 初始化完成"

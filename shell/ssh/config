@@ -1,0 +1,6 @@
+Include ~/.orbstack/ssh/config
+
+Host connect.nmb1.seetacloud.com
+  HostName connect.nmb1.seetacloud.com
+  Port 41007
+  User root

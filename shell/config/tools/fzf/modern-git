@@ -1,0 +1,100 @@
+### MODERN GIT TOOLS
+# 现代化Git工具集成
+# 结合 delta, lazygit 和 fzf 提供增强的Git体验
+
+# 检查是否在Git仓库中
+if ! git rev-parse --git-dir > /dev/null 2>&1; then
+  echo "❌ 当前目录不是Git仓库"
+  return 1
+fi
+
+# Git操作菜单
+local git_action=$(echo "📊 查看状态 (git status)
+📈 查看提交历史 (git log --oneline)
+🔍 查看差异 (git diff)
+🌿 切换分支 (git checkout)
+📝 交互式提交 (lazygit)
+🔄 同步远程 (git pull)
+📤 推送更改 (git push)
+🏷️  查看标签 (git tag)
+📁 查看文件历史
+🔧 Git配置" | fzf --header='[🐙 Git工具箱]' --height=60%)
+
+case $git_action in
+  *"查看状态"*)
+    git status
+    ;;
+  *"查看提交历史"*)
+    if command -v delta &> /dev/null; then
+      git log --oneline --graph --decorate --all | fzf --preview 'git show --color=always {1}' --preview-window=right:60%
+    else
+      git log --oneline --graph --decorate --all | fzf --preview 'git show {1}' --preview-window=right:60%
+    fi
+    ;;
+  *"查看差异"*)
+    if command -v delta &> /dev/null; then
+      git diff --color=always | delta
+    else
+      git diff
+    fi
+    ;;
+  *"切换分支"*)
+    local branch=$(git branch -a | grep -v '^*' | fzf --header='[🌿 选择分支]' | sed 's/^[ *]*//' | sed 's/remotes\/origin\///')
+    if [[ -n "$branch" ]]; then
+      git checkout "$branch"
+    fi
+    ;;
+  *"交互式提交"*)
+    if command -v lazygit &> /dev/null; then
+      lazygit
+    else
+      echo "❌ 需要安装 lazygit: brew install lazygit"
+    fi
+    ;;
+  *"同步远程"*)
+    git pull
+    ;;
+  *"推送更改"*)
+    git push
+    ;;
+  *"查看标签"*)
+    git tag | fzf --preview 'git show --color=always {}' --preview-window=right:60%
+    ;;
+  *"查看文件历史"*)
+    local file=$(git ls-files | fzf --header='[📁 选择文件查看历史]')
+    if [[ -n "$file" ]]; then
+      git log --oneline "$file" | fzf --preview "git show --color=always {1} -- $file" --preview-window=right:60%
+    fi
+    ;;
+  *"Git配置"*)
+    echo "🔧 Git配置选项:"
+    echo "1. 配置用户信息"
+    echo "2. 设置Delta为默认diff工具"
+    echo "3. 查看当前配置"
+    echo -n "选择操作 [1-3]: "
+    read -r choice
+    case $choice in
+      1)
+        echo -n "输入用户名: "; read -r username
+        echo -n "输入邮箱: "; read -r email
+        git config --global user.name "$username"
+        git config --global user.email "$email"
+        echo "✅ 用户信息已更新"
+        ;;
+      2)
+        if command -v delta &> /dev/null; then
+          git config --global core.pager "delta"
+          git config --global interactive.diffFilter "delta --color-only"
+          git config --global delta.navigate true
+          git config --global delta.side-by-side false
+          echo "✅ Delta已设置为默认diff工具"
+        else
+          echo "❌ 需要安装 delta: brew install git-delta"
+        fi
+        ;;
+      3)
+        git config --list | fzf --header='[⚙️ Git配置]'
+        ;;
+    esac
+    ;;
+esac 

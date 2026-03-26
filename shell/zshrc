@@ -1,0 +1,65 @@
+# Zsh configuration
+
+# Homebrew (需要在 Zim 之前加载)
+export PATH="/opt/homebrew/bin:$PATH"
+
+# Zim 框架初始化
+ZIM_HOME=~/.zim
+if [[ ! -e ${ZIM_HOME}/zimfw.zsh ]]; then
+  curl -fsSL --create-dirs -o ${ZIM_HOME}/zimfw.zsh https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh
+fi
+if [[ ! ${ZIM_HOME}/init.zsh -nt ${ZDOTDIR:-${HOME}}/.zimrc ]]; then
+  source ${ZIM_HOME}/zimfw.zsh init -q
+fi
+source ${ZIM_HOME}/init.zsh
+
+# Ghostty shell integration (在 Zim 之后加载)
+if [[ -n $GHOSTTY_RESOURCES_DIR ]]; then
+  source "$GHOSTTY_RESOURCES_DIR"/shell-integration/zsh/ghostty-integration
+fi
+
+# Conda 启动时自动激活 base，prompt 显示 (base)
+export ZSH_CONDA_MODE=eager
+
+# Load secrets (API keys)
+[ -f ~/Documents/sync/.secrets/api-keys.zsh ] && source ~/Documents/sync/.secrets/api-keys.zsh
+
+# Load core configs first
+for config in ~/Documents/sync/shell/config/core/*.zsh; do
+  [ -r "$config" ] && source "$config"
+done
+
+# Load tools configs
+for config in ~/Documents/sync/shell/config/tools/*.zsh; do
+  [ -r "$config" ] && source "$config"
+done
+
+# Load integrations configs
+for config in ~/Documents/sync/shell/config/integrations/*.zsh; do
+  [ -r "$config" ] && source "$config"
+done
+
+# NVM 懒加载（优化启动速度）
+export NVM_DIR="$HOME/.nvm"
+export NVM_NODEJS_ORG_MIRROR=https://npmmirror.com/mirrors/node
+
+_nvm_lazy_load() {
+  unfunction nvm node npm npx pnpm claude 2>/dev/null
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+}
+for cmd in nvm node npm npx pnpm claude; do
+  eval "${cmd}() { _nvm_lazy_load; ${cmd} \"\$@\" }"
+done
+
+# 工具初始化
+eval "$(zoxide init zsh)"
+eval "$(atuin init zsh)"
+eval "$(starship init zsh)"
+export PATH="$HOME/bin:$PATH"
+
+# OpenClaw Completion
+source "/Users/tianli/.openclaw/completions/openclaw.zsh"
+
+
+# 个人敏感信息（环境变量）
+[[ -f ~/.personal_env ]] && source ~/.personal_env

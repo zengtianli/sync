@@ -1,0 +1,14 @@
+---
+description: 项目上下文 - 引用 CLAUDE.md
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# 项目上下文
+
+请阅读项目根目录的 `CLAUDE.md` 文件获取完整的项目上下文、约束和规范。
+
+核心要点：
+- 这是 **配置部** 的 dotfiles 仓库
+- 禁止开发脚本、配置 LaunchAgent、直接修改 `~/.xxx`
+- 修改前备份，通过 sync 软链接部署

@@ -1,0 +1,232 @@
+   Yazi 终端工作流需求分析
+                    日期: 2025-12-20
+================================================================================
+
+一、你的日常操作分析（基于 useful_scripts）
+================================================================================
+
+根据 /Users/tianli/useful_scripts/execute/raycast/ 目录分析，你的高频操作：
+
+【文档格式转换】(最常用)
+  - DOCX → Markdown (docx_to_md.sh)
+  - Markdown → DOCX (md_to_docx.sh)
+  - DOCX → PDF (docx_to_pdf.sh)
+  - PDF → Markdown (pdf_to_md.sh)
+  - PPTX → Markdown (pptx_to_md.py)
+  - DOC → DOCX (docx_from_doc.sh)
+
+【Excel/CSV 转换】
+  - XLSX → CSV (xlsx_to_csv.py)
+  - XLSX → TXT (xlsx_to_txt.py)
+  - CSV → XLSX (csv_to_xlsx.py, xlsx_from_csv.py)
+  - CSV ↔ TXT 互转 (csv_from_txt.py, csv_to_txt.py)
+  - Excel 工作表拆分 (xlsx_splitsheets.py)
+  - Excel 表合并 (xlsx_merge_tables.py)
+
+【DOCX 格式化】(水利行业专用)
+  - 一键 ZDWP 格式化 (docx_zdwp_all.py)
+  - 文本格式修复：引号、标点、单位 (docx_text_formatter.py)
+  - 标题样式应用 (docx_apply_heading_styles.py)
+  - 表格样式应用 (docx_apply_table_style.py)
+  - 段落样式应用 (docx_apply_paragraph_style.py)
+  - 图片题注样式 (docx_apply_image_caption.py)
+  - 数字英文字体格式化 (docx_format_numbers.py)
+  - 页眉/页脚/水印 (docx_apply_header/footer/watermark.py)
+
+【Markdown 处理】
+  - Markdown 格式修复 (md_formatter.py)
+  - Markdown 文件合并 (md_merge.py)
+  - Markdown 按标题拆分 (split_md.py)
+
+【文件比较】
+  - 文件/文件夹比较 (compare_files.py, compare_files_folders.py)
+  - Excel 数据比较 (compare_excel.py, compare_excel_data.py)
+
+【文件操作】
+  - 复制文件名到剪贴板 (file_copy_filename.py)
+  - 复制文件名+内容 (file_copy_name_content.py)
+  - 扁平化目录 (file_flatten.sh)
+  - 按类型整理文件 (file_organize.sh)
+  - 批量添加前缀 (folder_add_prefix.py)
+  - 清理空目录 (clean_empty_dirs.sh)
+
+【LLM 辅助】
+  - 事实核查 (llm_fact_check.py)
+  - 文档评估 (llm_evaluate.py)
+  - 从 MD 提取信息到 Excel (llm_extract_md.py)
+
+【压缩归档】
+  - 已有 compress 插件
+
+【读取预览】
+  - 读取 Word 内容 (tool_read_docx.py)
+  - 读取 Excel 内容 (tool_read_xlsx.py)
+
+
+二、Yazi 可用插件列表
+================================================================================
+
+【你已安装的插件】
+  ✅ git.yazi         - Git 状态显示
+  ✅ yamb.yazi        - 书签管理（使用 fzf）
+  ✅ smart-enter.yazi - 智能进入（文件用编辑器打开，文件夹进入）
+  ✅ compress.yazi    - 压缩归档
+  ⚠️ yaziline.yazi   - 状态栏美化（新版不兼容）
+  ⚠️ starship.yazi   - Starship 提示符（未启用）
+
+【官方插件 (yazi-rs/plugins)】
+  - chmod.yazi        - 修改文件权限
+  - diff.yazi         - 文件差异比较（使用 delta）
+  - full-border.yazi  - 完整边框样式
+  - hide-preview.yazi - 隐藏/显示预览
+  - jump-to-char.yazi - 跳转到字符（类似 vim f）
+  - max-preview.yazi  - 最大化预览
+  - mount.yazi        - 挂载管理
+  - no-status.yazi    - 隐藏状态栏
+  - smart-filter.yazi - 智能过滤
+  - smart-paste.yazi  - 智能粘贴（避免覆盖）
+
+【社区热门插件】
+  - fzf.yazi          - FZF 集成（你已在 keymap 中配置 Ctrl+P）
+  - zoxide.yazi       - Zoxide 集成（你已配置 zo）
+  - lazygit.yazi      - LazyGit 集成（你已配置 Ctrl+G）
+  - exifaudio.yazi    - 音频元数据显示
+  - glow.yazi         - Markdown 预览增强
+  - hexyl.yazi        - 二进制文件预览
+  - miller.yazi       - JSON/CSV 预览增强
+  - mediainfo.yazi    - 媒体文件信息
+  - ouch.yazi         - 解压缩增强
+  - rich-preview.yazi - 富文本预览
+  - torrent-preview.yazi - 种子文件预览
+  - what-size.yazi    - 目录大小统计
+  - relative-motions.yazi - 相对移动（vim 风格数字+移动）
+  - searchjump.yazi   - 搜索跳转
+  - keyjump.yazi      - 快速跳转
+  - fg.yazi           - 文件内容搜索（ripgrep）
+  - bookmarks.yazi    - 另一个书签插件
+  - yatline.yazi      - 状态栏美化（yaziline 替代品）
+  - open-with-cmd.yazi - 用自定义命令打开文件
+
+
+三、你的需求 → Yazi 实现方案
+================================================================================
+
+【高优先级：文档转换】
+
+需求: 在 Yazi 中对选中文件执行格式转换
+
+方案1: 自定义 Shell 命令（推荐）
+  在 keymap.toml 中添加快捷键，调用你的脚本
+
+方案2: 创建 Yazi 插件
+  封装你的脚本为 Yazi 插件
+
+具体实现见下方"建议操作"部分
+
+【中优先级：文件操作增强】
+
+  - diff.yazi       → 文件比较（替代 compare_files.py 部分功能）
+  - what-size.yazi  → 目录大小统计
+  - chmod.yazi      → 权限管理
+  - ouch.yazi       → 解压增强
+
+【低优先级：预览增强】
+
+  - glow.yazi       → Markdown 预览更好看
+  - miller.yazi     → JSON/CSV 预览增强
+  - hexyl.yazi      → 二进制预览
+
+
+四、建议操作
+================================================================================
+
+【方案A：快捷键调用脚本（简单快速）】
+
+在 keymap.toml 的 [mgr] prepend_keymap 中添加：
+
+```toml
+# 文档转换快捷键
+{ on = ["c", "d", "m"], run = 'shell "bash ~/useful_scripts/execute/raycast/docx_to_md.sh $@" --confirm', desc = "DOCX → MD" },
+{ on = ["c", "m", "d"], run = 'shell "bash ~/useful_scripts/execute/raycast/md_to_docx.sh $@" --confirm', desc = "MD → DOCX" },
+{ on = ["c", "x", "c"], run = 'shell "python3 ~/useful_scripts/execute/raycast/xlsx_to_csv.py $@" --confirm', desc = "XLSX → CSV" },
+{ on = ["c", "c", "x"], run = 'shell "python3 ~/useful_scripts/execute/raycast/csv_to_xlsx.py $@" --confirm', desc = "CSV → XLSX" },
+
+# DOCX 格式化
+{ on = ["c", "f", "a"], run = 'shell "python3 ~/useful_scripts/execute/raycast/docx_zdwp_all.py $@" --confirm', desc = "DOCX ZDWP格式化" },
+{ on = ["c", "f", "t"], run = 'shell "python3 ~/useful_scripts/execute/raycast/docx_text_formatter.py $@" --confirm', desc = "DOCX 文本修复" },
+
+# 读取预览
+{ on = ["c", "r", "d"], run = 'shell "python3 ~/useful_scripts/execute/tools/read_docx.py $@ | less" --block', desc = "读取 DOCX" },
+{ on = ["c", "r", "x"], run = 'shell "python3 ~/useful_scripts/execute/tools/read_xlsx.py $@ | less" --block', desc = "读取 XLSX" },
+
+# 文件比较
+{ on = ["c", "c", "f"], run = 'shell "python3 ~/useful_scripts/execute/compare/compare_files_folders.py $@" --block', desc = "文件比较" },
+```
+
+【方案B：安装推荐插件】
+
+```bash
+cd ~/.config/yazi
+ya pkg add yazi-rs/plugins:diff
+ya pkg add yazi-rs/plugins:chmod
+ya pkg add Rolv-Apneseth/ouch.yazi
+ya pkg add yatline/yatline.yazi  # 替代 yaziline
+```
+
+【方案C：创建自定义转换插件（高级）】
+
+创建 ~/.config/yazi/plugins/convert.yazi/main.lua
+封装所有转换逻辑，提供统一界面
+
+
+五、快捷键规划建议
+================================================================================
+
+按照你的 keymap 风格，建议使用 "c" 前缀作为"转换/命令"系列：
+
+c + 第二键（类型）+ 第三键（目标）
+
+【转换类快捷键】
+  cdm = DOCX → Markdown
+  cmd = Markdown → DOCX
+  cdp = DOCX → PDF
+  cpm = PDF → Markdown
+
+  cxc = XLSX → CSV
+  ccx = CSV → XLSX
+  cxt = XLSX → TXT
+
+  cpm = PPTX → Markdown
+
+【格式化快捷键】
+  cfa = DOCX 全部格式化 (ZDWP All)
+  cft = DOCX 文本修复
+  cfh = DOCX 标题样式
+  cfp = DOCX 段落样式
+  cfs = DOCX 表格样式
+
+【读取/预览】
+  crd = 读取 DOCX
+  crx = 读取 XLSX
+  crp = 读取 PDF
+
+【比较】
+  ccf = 比较文件
+  ccx = 比较 Excel
+
+【Markdown】
+  cmf = Markdown 格式修复
+  cmm = Markdown 合并
+  cms = Markdown 拆分
+
+
+六、下一步
+================================================================================
+
+1. 确认你想要的方案（A/B/C 或组合）
+2. 我帮你配置 keymap.toml
+3. 安装推荐的插件
+4. 测试工作流
+
+================================================================================
+                              End of Document

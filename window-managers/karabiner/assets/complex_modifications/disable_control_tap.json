@@ -1,0 +1,29 @@
+{
+	"title": "Disable Control+Single Tap",
+	"rules": [
+		{
+			"description": "Disable Control+Tap on a specific key (e.g., spacebar)",
+			"manipulators": [
+				{
+					"type": "basic",
+					"from": {
+						"key_code": "spacebar",
+						"modifiers": {
+							"mandatory": [
+								"control"
+							],
+							"optional": [
+								"any"
+							]
+						}
+					},
+					"to": [
+						{
+							"key_code": "f19"
+						}
+					]
+				}
+			]
+		}
+	]
+}

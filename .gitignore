@@ -1,0 +1,39 @@
+vscode
+
+# macOS
+.DS_Store
+
+# Vim 交换文件
+*.swp
+*.swo
+*.swm
+*~
+
+# Neovim 临时目录
+nvim/tmp/
+.secrets/
+
+# Git 子仓库（独立管理）
+network/
+window-managers/hammerspoon/
+
+# macOS 系统文件
+.DS_Store
+**/.DS_Store
+
+# Neovim 临时文件
+editors/nvim/tmp/
+editors/nvim/profile.log
+zsh/ssh/
+
+# 运行时/缓存（不进 git）
+*.log
+*.pyc
+__pycache__/
+
+# Exclude sensitive and runtime files
+.secrets/
+secrets/env
+secrets/streamlit/machine_id_v4
+editors/nvim/tmp/
+*.pem

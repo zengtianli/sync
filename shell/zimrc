@@ -1,0 +1,16 @@
+zmodule environment
+zmodule git
+zmodule input
+zmodule utility
+zmodule git-info
+zmodule prompt-pwd
+zmodule magicmace
+zmodule zsh-users/zsh-completions
+zmodule completion
+zmodule zsh-users/zsh-autosuggestions
+zmodule zsh-users/zsh-history-substring-search
+zmodule zdharma-continuum/fast-syntax-highlighting
+zmodule hlissner/zsh-autopair
+zmodule supercrabtree/k
+zmodule agkozak/zsh-z
+zmodule Aloxaf/fzf-tab

@@ -1,0 +1,400 @@
+# ============================================================
+# 工具链分析与生产力增强建议
+# 生成日期: 2025-12-25
+# 配置部 @ ~/Documents/sync/apps/
+# ============================================================
+
+================================================================================
+一、当前工具链概览
+================================================================================
+
+【常驻后台应用】(essential_apps.txt)
+├── 系统增强
+│   ├── Karabiner-Elements     ✅ 键盘映射（已深度配置）
+│   ├── Raycast                ✅ 启动器（核心工具）
+│   ├── rcmd                   ✅ 应用切换（右⌘+首字母）
+│   ├── Loop                   ✅ 窗口管理
+│   └── MonitorControl         ✅ 显示器亮度
+├── 效率工具
+│   ├── PastePal               ✅ 剪贴板管理
+│   ├── CleanShot X            ✅ 截图工具
+│   ├── TextSniper             ✅ OCR 文字识别
+│   └── Itsycal                ✅ 菜单栏日历
+├── 网络/安全
+│   ├── ClashX Pro             ✅ 代理工具
+│   └── BLEUnlock              ✅ 蓝牙解锁
+├── 输入/自动化
+│   ├── MessAuto               ✅ 验证码自动填充
+│   ├── Keyboard Maestro       ✅ 宏自动化
+│   └── Hammerspoon            ✅ 脚本自动化
+└── 其他
+    ├── AirBattery             ✅ 电量监控
+    └── Hummingbird            ✅ 状态栏优化
+
+【命令行工具链】(已安装且已配置)
+├── 文件系统
+│   ├── eza                    ✅ 替代 ls
+│   ├── bat                    ✅ 替代 cat
+│   ├── fd                     ✅ 替代 find
+│   ├── dust                   ✅ 替代 du
+│   ├── duf                    ✅ 替代 df
+│   └── yazi                   ✅ 终端文件管理器
+├── 搜索/文本
+│   ├── fzf                    ✅ 模糊搜索
+│   ├── ripgrep (rg)           ✅ 替代 grep
+│   ├── sd                     ✅ 替代 sed
+│   └── delta                  ✅ Git diff 高亮
+├── 系统监控
+│   ├── btop                   ✅ 替代 top
+│   └── procs                  ✅ 替代 ps
+├── 开发工具
+│   ├── lazygit                ✅ Git TUI
+│   ├── neovim                 ✅ 编辑器（已深度配置）
+│   └── just                   ✅ 任务运行器
+├── 网络工具
+│   ├── httpie                 ✅ HTTP 客户端
+│   ├── dog                    ✅ DNS 查询
+│   └── gping                  ✅ 网络延迟可视化
+├── 智能增强
+│   ├── zoxide                 ✅ 智能目录跳转
+│   ├── atuin                  ✅ Shell 历史管理
+│   └── ollama                 ✅ 本地 LLM
+└── 其他
+    ├── croc                   ✅ P2P 文件传输
+    ├── age                    ✅ 现代加密
+    ├── yq                     ✅ YAML 处理
+    ├── jc                     ✅ JSON 转换
+    └── czkawka                ✅ 重复文件检测
+
+================================================================================
+二、未充分利用的已安装工具
+================================================================================
+
+🔴 【高优先级】这些工具已安装但未配置到工作流
+
+1. atuin (Shell 历史管理)
+   状态: 已安装但未在 zshrc 中初始化
+   建议: 添加 `eval "$(atuin init zsh)"` 到 zshrc
+   收益: 跨终端历史同步、AI 搜索历史、统计分析
+
+2. zoxide (智能目录跳转)
+   状态: 已安装但未初始化
+   建议: 添加 `eval "$(zoxide init zsh)"` 到 zshrc
+   收益: 智能 cd，自动学习常用目录，`z project` 直接跳转
+
+3. Hammerspoon
+   状态: 已运行但配置可能未充分利用
+   建议: 检查 ~/.hammerspoon/init.lua 是否有自动化脚本
+   收益: 可做窗口管理、快捷键、剪贴板处理等
+
+4. Keyboard Maestro
+   状态: 引擎运行中
+   建议: 创建常用文本片段、自动化工作流
+   收益: 文本扩展、触发器自动化、变量宏
+
+🟡 【中优先级】可选安装
+
+5. starship (终端提示符美化)
+   状态: ❌ 未安装
+   安装: brew install starship
+   配置: echo 'eval "$(starship init zsh)"' >> ~/.zshrc
+   收益: 美观的 Git 状态、目录显示、执行时间
+
+6. navi (交互式 Cheatsheet)
+   状态: ❌ 未安装
+   安装: brew install navi
+   收益: Ctrl+G 快速查找命令速查表
+
+7. tlrc (tldr Rust 版)
+   状态: ❌ 未安装 (tldr 已有)
+   安装: brew install tlrc
+   收益: 更快的命令帮助查询
+   
+   都安装，切说明下使用场景
+
+================================================================================
+三、应用配置优化建议
+================================================================================
+
+【A. Zsh 配置优化】
+
+1. 修复重复的 NVM 配置
+   文件: ~/Documents/sync/zsh/zshrc
+   问题: NVM 配置重复了 3 次
+   
+   当前（第26-39行）:
+   ```
+   # nvm config
+   export NVM_DIR="$HOME/.nvm"
+   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+   export NVM_NODEJS_ORG_MIRROR=https://npmmirror.com/mirrors/node
+   
+   # nvm config (重复)
+   ...
+   ```
+   
+   建议只保留一份。
+
+2. 添加 zoxide 和 atuin 初始化
+   文件: ~/Documents/sync/zsh/config/modern-tools.zsh 或新建 tools-init.zsh
+   
+   添加内容:
+   ```zsh
+   # Zoxide - 智能目录跳转
+   if command -v zoxide &> /dev/null; then
+     eval "$(zoxide init zsh)"
+     alias cd="z"      # 替代 cd
+     alias cdi="zi"    # 交互式选择
+   fi
+   
+   # Atuin - Shell 历史管理
+   if command -v atuin &> /dev/null; then
+     eval "$(atuin init zsh)"
+   fi
+   ```
+
+3. 添加更多实用别名
+   ```zsh
+   # 快速编辑核心配置
+   alias ez="nvim ~/Documents/sync/zsh/zshrc"
+   alias ek="nvim ~/Documents/sync/karabiner/karabiner.json"
+   alias ey="nvim ~/Documents/sync/yabai/config/yabairc"
+   alias ev="nvim ~/Documents/sync/nvim/init.lua"
+   
+   # 快速 cd 到常用目录
+   alias cdp="cd ~/Downloads/zdwp/02_业务项目"
+   alias cds="cd ~/Documents/sync"
+   alias cdu="cd ~/useful_scripts"
+   alias cdc="cd ~/cursor-shared"
+   ```
+   所有的alias 都不用，容易和命令 起冲突，这个也记住，到记忆里。除非我要求加入alias，甚至alias的agent，其他就不要多此一举
+
+【B. Yabai/skhd 增强】
+
+当前 skhd 只配置了窗口定位快捷键，建议补充：
+
+文件: ~/Documents/sync/yabai/config/skhd/skhdrc
+
+```bash
+# 空间切换
+ctrl - 1 : yabai -m space --focus 1
+ctrl - 2 : yabai -m space --focus 2
+ctrl - 3 : yabai -m space --focus 3
+ctrl - 4 : yabai -m space --focus 4
+
+# 移动窗口到空间
+ctrl + shift - 1 : yabai -m window --space 1
+ctrl + shift - 2 : yabai -m window --space 2
+ctrl + shift - 3 : yabai -m window --space 3
+ctrl + shift - 4 : yabai -m window --space 4
+
+# 窗口焦点切换
+alt - h : yabai -m window --focus west
+alt - l : yabai -m window --focus east
+alt - j : yabai -m window --focus south
+alt - k : yabai -m window --focus north
+
+# 快速启动
+# alt - t : open -a "Ghostty"
+# alt - b : open -a "Arc"
+# alt - f : open -a "Finder"
+```
+
+【C. Raycast 增强】
+
+检查是否已配置以下扩展：
+- Clipboard History (剪贴板历史)
+- Window Management (窗口管理)
+- System (系统命令)
+- Calculator (计算器)
+- File Search (文件搜索)
+- GitHub (如果使用)
+- Tailscale (如果使用)
+
+建议安装的扩展：
+- Color Picker (取色器)
+- Translate (翻译)
+- Speedtest (网速测试)
+- Kill Process (进程管理)
+- Brew (Homebrew 管理)
+
+================================================================================
+四、遗漏的生产力工具推荐
+================================================================================
+
+【立即安装】高收益工具
+
+1. starship - 终端美化
+   brew install starship
+   echo 'eval "$(starship init zsh)"' >> ~/Documents/sync/zsh/zshrc
+装
+
+2. mackup - 应用配置备份
+   brew install mackup
+   # 可备份大量应用配置到 iCloud/Dropbox
+你看看我的目录，我就在icloud里
+
+3. mas - Mac App Store 命令行
+   brew install mas
+   # 已安装，用于批量管理 App Store 应用
+
+4. topgrade - 一键更新所有
+   brew install topgrade
+   # 一个命令更新 brew, npm, pip, mas 等
+
+【可选安装】特定场景工具
+
+5. imagemagick - 图片处理
+   已安装 ✅
+
+6. ffmpeg - 视频处理
+   已安装 ✅
+
+7. pandoc - 文档转换
+   已安装 ✅
+
+8. tesseract - OCR 识别
+   已安装 ✅
+
+================================================================================
+五、配置文件管理建议
+================================================================================
+
+【当前结构优化】
+
+~/Documents/sync/
+├── apps/                    # 新增：应用清单
+│   ├── running_apps.txt     → ~/Desktop/running_apps.txt (软链接)
+│   ├── essential_apps.txt   → ~/Desktop/essential_apps.txt (软链接)
+│   ├── brew-bundle.txt      # 建议：Homebrew 包清单
+│   └── 工具链分析与增强建议.txt
+├── karabiner/               ✅ 已配置
+├── nvim/                    ✅ 已配置
+├── yabai/                   ✅ 已配置
+├── yazi/                    ✅ 已配置
+├── zsh/                     ✅ 已配置（需优化）
+└── IDE/                     ✅ ideavimrc
+
+【建议补充】
+
+1. 创建 Brewfile 用于包管理
+   文件: ~/Documents/sync/apps/Brewfile
+   
+   ```ruby
+   # Brewfile - Homebrew 包清单
+   
+   # Taps
+   tap "homebrew/bundle"
+   
+   # CLI 工具
+   brew "eza"
+   brew "bat"
+   brew "fd"
+   brew "ripgrep"
+   brew "fzf"
+   brew "dust"
+   brew "duf"
+   brew "btop"
+   brew "procs"
+   brew "sd"
+   brew "delta"
+   brew "lazygit"
+   brew "yazi"
+   brew "zoxide"
+   brew "atuin"
+   brew "starship"
+   brew "just"
+   brew "croc"
+   brew "age"
+   brew "yq"
+   brew "jc"
+   brew "ollama"
+   
+   # Casks
+   cask "raycast"
+   cask "karabiner-elements"
+   cask "loop"
+   cask "cleanshot"
+   cask "orbstack"
+   cask "ghostty"
+   # ... 更多
+   ```
+   
+   使用: `brew bundle --file=~/Documents/sync/apps/Brewfile`
+
+2. 创建应用启动脚本
+   文件: ~/Documents/sync/apps/startup.sh
+   这个有，在开发部门
+/Users/tianli/useful_scripts/execute/raycast/sys_app_launcher.py
+   
+   ```bash
+   #!/bin/bash
+   # 开机启动核心应用
+   
+   apps=(
+     "Raycast"
+     "Karabiner-Elements"
+     "ClashX Pro"
+     "PastePal"
+     "rcmd"
+     "Loop"
+     "BLEUnlock"
+     "Itsycal"
+     "MonitorControl"
+   )
+   
+   for app in "${apps[@]}"; do
+     open -a "$app" 2>/dev/null
+   done
+   ```
+
+================================================================================
+六、快速操作清单
+================================================================================
+
+【立即执行】(5分钟内完成)
+
+□ 1. 修复 zshrc 重复配置
+     sed -i '' '31,40d' ~/Documents/sync/zsh/zshrc
+
+□ 2. 初始化 zoxide
+     echo 'eval "$(zoxide init zsh)"' >> ~/Documents/sync/zsh/config/modern-tools.zsh
+
+□ 3. 初始化 atuin
+     echo 'eval "$(atuin init zsh)"' >> ~/Documents/sync/zsh/config/modern-tools.zsh
+
+□ 4. 安装 starship
+     brew install starship
+     echo 'eval "$(starship init zsh)"' >> ~/Documents/sync/zsh/zshrc
+
+□ 5. 重载配置
+     source ~/.zshrc
+
+【本周完成】
+
+□ 创建 Brewfile 包清单
+□ 检查 Hammerspoon 配置
+□ 优化 Keyboard Maestro 宏
+□ 补充 skhd 快捷键
+□ 整理 Raycast 扩展
+
+================================================================================
+七、文件路径索引
+================================================================================
+
+| 配置类型 | 配置部路径 | 系统链接位置 |
+|----------|------------|--------------|
+| Zsh | ~/Documents/sync/zsh/zshrc | ~/.zshrc |
+| Neovim | ~/Documents/sync/nvim/ | ~/.config/nvim |
+| Yabai | ~/Documents/sync/yabai/config/ | ~/.config/yabai |
+| skhd | ~/Documents/sync/yabai/config/skhd/ | ~/.config/skhd |
+| Karabiner | ~/Documents/sync/karabiner/ | ~/.config/karabiner |
+| Yazi | ~/Documents/sync/yazi/ | ~/.config/yazi |
+| Git | ~/Documents/sync/zsh/gitconfig | ~/.gitconfig |
+| SSH | ~/Documents/sync/zsh/ssh/ | ~/.ssh |
+| App清单 | ~/Documents/sync/apps/ | ~/Desktop/*.txt |
+
+================================================================================
+# 结束
+================================================================================
+

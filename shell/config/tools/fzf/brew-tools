@@ -1,0 +1,178 @@
+### UNIFIED BREW TOOLS
+# 统一的Homebrew包管理工具
+# 集成安装、更新、清理功能
+
+# 定义现代工具列表（用于推荐和安全检查）
+local modern_tools="eza bat fd dust duf procs btop sd git-delta dog gping httpie yq jc just hyperfine croc age miller visidata nmap ripgrep git zsh tmux nvim fzf"
+
+# 主菜单
+local action=$(echo "📦 安装包 (Install Packages)
+🔄 更新包 (Update Packages)  
+🗑️ 清理包 (Clean Packages)
+📊 查看状态 (Show Status)" | fzf --header='[🍺 Homebrew工具箱] 选择操作' --height=60%)
+
+case $action in
+  *"安装包"*)
+    echo "🚀 === 包安装模式 ==="
+    
+    # 创建带分类的搜索列表
+    local search_list=$(
+      echo "=== 🚀 推荐现代工具 ==="
+      for tool in $(echo $modern_tools); do
+        # 检查是否已安装
+        if command -v "$tool" &> /dev/null; then
+          echo "✅ $tool (已安装)"
+        else
+          echo "📦 $tool"
+        fi
+      done
+      echo ""
+      echo "=== 🔍 搜索所有包 ==="
+      brew search ""
+    )
+
+    local inst=$(echo "$search_list" | fzf -m --header='[📦 选择要安装的包] Tab:多选 Enter:确认' | grep -E '^📦|^[^=✅]' | sed 's/^📦 //' | sed 's/^✅ .*//')
+
+    if [[ $inst ]]; then
+      echo "🚀 准备安装以下包："
+      echo "$inst" | tr ' ' '\n'
+      echo ""
+      echo -n "❓ 确认安装? [y/N]: "
+      read -r confirm
+      if [[ "$confirm" =~ ^[Yy]$ ]]; then
+        for prog in $(echo $inst); do 
+          echo "📦 安装 $prog..."
+          brew install $prog
+        done
+        echo "✅ 安装完成！运行 check_modern_tools 检查现代工具状态"
+      else
+        echo "❌ 安装已取消"
+      fi
+    fi
+    ;;
+
+  *"更新包"*)
+    echo "🔄 === 包更新模式 ==="
+    
+    # 检查过时的包
+    local outdated=$(brew outdated --quiet)
+
+    if [[ -z "$outdated" ]]; then
+      echo "✅ 所有包都是最新的！"
+      return 0
+    fi
+
+    echo "📦 发现以下过时的包："
+    echo "$outdated"
+    echo ""
+
+    # 使用FZF选择要更新的包
+    local upd=$(echo "$outdated" | fzf -m --header='[🔄 选择要更新的包] Tab:多选 Enter:确认')
+
+    if [[ $upd ]]; then
+      echo "🚀 准备更新以下包："
+      echo "$upd" | tr ' ' '\n'
+      echo ""
+      echo -n "❓ 确认更新? [y/N]: "
+      read -r confirm
+      if [[ "$confirm" =~ ^[Yy]$ ]]; then
+        for prog in $(echo $upd); do 
+          echo "🔄 更新 $prog..."
+          brew upgrade $prog
+        done
+        echo "✅ 更新完成！"
+        
+        # 如果更新了现代工具，提示检查状态
+        if echo "$upd" | grep -qE "(eza|bat|fd|dust|duf|procs|btop|sd|delta|dog|gping|httpie|yq|jc|just|hyperfine|croc|age)"; then
+          echo "💡 运行 check_modern_tools 检查现代工具状态"
+        fi
+      else
+        echo "❌ 更新已取消"
+      fi
+    fi
+    ;;
+
+  *"清理包"*)
+    echo "🗑️ === 包清理模式 ==="
+    
+    # 获取可卸载的包（叶子节点）
+    local leaves=$(brew leaves)
+
+    if [[ -z "$leaves" ]]; then
+      echo "✅ 没有可清理的包！"
+      return 0
+    fi
+
+    # 为重要工具添加警告标记
+    local marked_list=$(
+      echo "$leaves" | while read -r package; do
+        if echo "$modern_tools" | grep -qw "$package"; then
+          echo "⚠️  $package (重要工具)"
+        else
+          echo "📦 $package"
+        fi
+      done
+    )
+
+    local uninst=$(echo "$marked_list" | fzf -m --header='[🗑️ 选择要卸载的包] ⚠️=重要工具 Tab:多选' | sed 's/^[⚠️📦]* *//')
+
+    if [[ $uninst ]]; then
+      echo "🗑️ 准备卸载以下包："
+      echo "$uninst" | tr ' ' '\n'
+      echo ""
+      
+      # 检查是否包含重要工具
+      local has_important=false
+      for pkg in $(echo "$uninst"); do
+        if echo "$modern_tools" | grep -qw "$pkg"; then
+          echo "⚠️  警告: $pkg 是重要的现代工具！"
+          has_important=true
+        fi
+      done
+      
+      if [[ "$has_important" == "true" ]]; then
+        echo ""
+        echo "❗ 你正要卸载重要工具，这可能影响现代化配置！"
+      fi
+      
+      echo -n "❓ 确认卸载? [y/N]: "
+      read -r confirm
+      if [[ "$confirm" =~ ^[Yy]$ ]]; then
+        for prog in $(echo $uninst); do 
+          echo "🗑️ 卸载 $prog..."
+          brew uninstall $prog
+        done
+        echo "✅ 清理完成！"
+        echo "💡 运行 check_modern_tools 检查现代工具状态"
+      else
+        echo "❌ 清理已取消"
+      fi
+    fi
+    ;;
+
+  *"查看状态"*)
+    echo "📊 === Homebrew状态 ==="
+    echo ""
+    echo "🍺 Homebrew版本:"
+    brew --version
+    echo ""
+    echo "📦 已安装包数量:"
+    brew list | wc -l | awk '{print $1 " 个包"}'
+    echo ""
+    echo "🔄 过时包检查:"
+    local outdated_count=$(brew outdated --quiet | wc -l)
+    if [[ $outdated_count -eq 0 ]]; then
+      echo "✅ 所有包都是最新的"
+    else
+      echo "⚠️  有 $outdated_count 个包需要更新"
+      brew outdated --quiet | head -5
+      [[ $outdated_count -gt 5 ]] && echo "... 还有 $((outdated_count - 5)) 个包"
+    fi
+    echo ""
+    echo "🧹 可清理包:"
+    local leaves_count=$(brew leaves | wc -l)
+    echo "📦 $leaves_count 个叶子包可以清理"
+    echo ""
+    echo "💡 运行 check_modern_tools 检查现代工具状态"
+    ;;
+esac 

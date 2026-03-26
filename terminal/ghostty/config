@@ -1,0 +1,3 @@
+# 新窗口继承当前工作目录
+window-inherit-working-directory = true
+clipboard-paste-protection = false

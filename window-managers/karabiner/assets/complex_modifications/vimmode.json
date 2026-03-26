@@ -1,0 +1,175 @@
+{
+	"title": "Arc Browser Customization",
+	"rules": [
+		{
+			"description": "Map Escape to hyper+Escape in Arc",
+			"manipulators": [
+				{
+					"type": "basic",
+					"conditions": [
+						{
+							"type": "frontmost_application_if",
+							"bundle_identifiers": [
+								"^company.thebrowser.Browser"
+							]
+						}
+					],
+					"from": {
+						"key_code": "escape",
+						"modifiers": {
+							"optional": [
+								"any"
+							]
+						}
+					},
+					"to": [
+						{
+							"key_code": "escape",
+							"modifiers": [
+								"left_shift",
+								"left_command",
+								"left_control"
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"description": "Map Escape to hyper+Escape in Notes",
+			"manipulators": [
+				{
+					"type": "basic",
+					"conditions": [
+						{
+							"type": "frontmost_application_if",
+							"bundle_identifiers": [
+								"^com.apple.Notes"
+							]
+						}
+					],
+					"from": {
+						"key_code": "escape",
+						"modifiers": {
+							"optional": [
+								"any"
+							]
+						}
+					},
+					"to": [
+						{
+							"key_code": "escape",
+							"modifiers": [
+								"left_shift",
+								"left_command",
+								"left_control"
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"description": "Map Escape to hyper+Escape in Wechat",
+			"manipulators": [
+				{
+					"type": "basic",
+					"conditions": [
+						{
+							"type": "frontmost_application_if",
+							"bundle_identifiers": [
+								"^com.tencent.xinWeChat"
+							]
+						}
+					],
+					"from": {
+						"key_code": "escape",
+						"modifiers": {
+							"optional": [
+								"any"
+							]
+						}
+					},
+					"to": [
+						{
+							"key_code": "escape",
+							"modifiers": [
+								"left_shift",
+								"left_command",
+								"left_control"
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"description": "Map Escape to hyper+Escape in DingTalk",
+			"manipulators": [
+				{
+					"type": "basic",
+					"conditions": [
+						{
+							"type": "frontmost_application_if",
+							"bundle_identifiers": [
+								"^com.alibaba.DingTalkMac"
+							]
+						}
+					],
+					"from": {
+						"key_code": "escape",
+						"modifiers": {
+							"optional": [
+								"any"
+							]
+						}
+					},
+					"to": [
+						{
+							"key_code": "escape",
+							"modifiers": [
+								"left_shift",
+								"left_command",
+								"left_control"
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"description": "Map Escape to hyper+Escape in SideNotes",
+			"manipulators": [
+				{
+					"type": "basic",
+					"conditions": [
+						{
+							"type": "frontmost_application_if",
+							"bundle_identifiers": [
+								"^com.apptorium.SideNotes-paddle"
+							]
+						}
+					],
+					"from": {
+						"key_code": "escape",
+						"modifiers": {
+							"optional": [
+								"any"
+							]
+						}
+					},
+					"to": [
+						{
+							"key_code": "escape",
+							"modifiers": [
+								"left_shift",
+								"left_command",
+								"left_control"
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

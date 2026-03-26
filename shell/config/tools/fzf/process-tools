@@ -1,0 +1,148 @@
+### UNIFIED PROCESS TOOLS
+# 统一的进程管理工具
+# 集成进程查看、终止、监控功能
+
+# 主菜单
+local action=$(echo "⚡ 终止进程 (Kill Process)
+👀 查看进程 (View Processes)
+📊 进程监控 (Process Monitor)
+🔍 搜索进程 (Search Process)" | fzf --header='[⚡ 进程管理工具箱] 选择操作' --height=60%)
+
+case $action in
+  *"终止进程"*)
+    echo "⚡ === 进程终止模式 ==="
+    
+    # 检查是否安装了procs
+    if command -v procs &> /dev/null; then
+      echo "🚀 使用现代化进程管理工具(procs)..."
+      echo "🔍 选择要管理的进程 (Tab: 多选, Enter: 终止, Ctrl-C: 取消)"
+      
+      local pids=$(procs --color always | fzf -m \
+        --header='[⚡ 进程管理] Tab:多选 Enter:终止选中进程' \
+        --preview 'echo "进程详情:" && echo {} | awk "{print \"PID: \" \$1 \"\nCMD: \" \$NF \"\nCPU: \" \$(NF-3) \"\nMEM: \" \$(NF-2)}"' \
+        --preview-window right:40% \
+        | awk 'NR>1 {print $1}')
+      
+      if [[ -n "$pids" ]]; then
+        echo "🎯 选中的PID: $(echo $pids | tr '\n' ' ')"
+        echo -n "❓ 确认终止这些进程? [y/N]: "
+        read -r confirm
+        if [[ "$confirm" =~ ^[Yy]$ ]]; then
+          echo "$pids" | xargs -I{} kill -15 {}
+          echo "✅ 已发送终止信号到选中进程"
+        else
+          echo "❌ 操作已取消"
+        fi
+      fi
+    else
+      echo "🔧 使用传统模式 (可运行 brew-tools 安装 procs 获得更佳体验)"
+      
+      local pid=$(ps -ef | sed 1d | fzf -m --header='[⚡ 进程管理 - 传统模式] Tab:多选 Enter:终止' | awk '{print $2}')
+
+      if [ "x$pid" != "x" ]; then
+        echo "🎯 选中的PID: $(echo $pid | tr '\n' ' ')"
+        echo -n "❓ 确认终止进程? [y/N]: "
+        read -r confirm
+        if [[ "$confirm" =~ ^[Yy]$ ]]; then
+          echo $pid | xargs kill -15
+          echo "✅ 已发送终止信号"
+        else
+          echo "❌ 操作已取消"
+        fi
+      fi
+    fi
+    ;;
+
+  *"查看进程"*)
+    echo "👀 === 进程查看模式 ==="
+    
+    if command -v procs &> /dev/null; then
+      echo "🚀 使用procs查看进程列表..."
+      local sort_option=$(echo "CPU使用率 (cpu)
+内存使用 (memory)  
+进程ID (pid)
+用户 (user)
+命令 (command)" | fzf --header='[📊 选择排序方式]' | awk '{print $NF}' | tr -d '()')
+      
+      if [[ -n "$sort_option" ]]; then
+        echo "📊 按 $sort_option 排序的进程列表:"
+        case $sort_option in
+          cpu) procs --sortd cpu ;;
+          memory) procs --sortd memory ;;
+          pid) procs --sortd pid ;;
+          user) procs --sortd user ;;
+          command) procs --sortd command ;;
+          *) procs ;;
+        esac
+      else
+        procs
+      fi
+    else
+      echo "🔧 使用传统ps命令..."
+      ps aux | head -20
+      echo ""
+      echo "💡 安装procs获得更好体验: brew-tools"
+    fi
+    ;;
+
+  *"进程监控"*)
+    echo "📊 === 进程监控模式 ==="
+    
+    if command -v btop &> /dev/null; then
+      echo "🚀 启动btop现代系统监控..."
+      btop
+    elif command -v top &> /dev/null; then
+      echo "🔧 启动传统top监控..."
+      top
+    else
+      echo "❌ 未找到系统监控工具"
+      echo "💡 安装btop获得现代监控体验: brew-tools"
+    fi
+    ;;
+
+  *"搜索进程"*)
+    echo "🔍 === 进程搜索模式 ==="
+    
+    echo -n "🔍 输入要搜索的进程名称或关键词: "
+    read -r search_term
+    
+    if [[ -z "$search_term" ]]; then
+      echo "❌ 搜索词不能为空"
+      return 1
+    fi
+    
+    if command -v procs &> /dev/null; then
+      echo "🚀 使用procs搜索进程..."
+      local found_procs=$(procs | grep -i "$search_term")
+      if [[ -n "$found_procs" ]]; then
+        echo "✅ 找到匹配的进程:"
+        echo "$found_procs"
+        echo ""
+        echo -n "❓ 是否要终止某个进程? [y/N]: "
+        read -r kill_confirm
+        if [[ "$kill_confirm" =~ ^[Yy]$ ]]; then
+          local kill_pid=$(echo "$found_procs" | fzf --header='[选择要终止的进程]' | awk '{print $1}')
+          if [[ -n "$kill_pid" ]]; then
+            echo -n "❓ 确认终止进程 $kill_pid? [y/N]: "
+            read -r final_confirm
+            if [[ "$final_confirm" =~ ^[Yy]$ ]]; then
+              kill -15 "$kill_pid"
+              echo "✅ 已发送终止信号到进程 $kill_pid"
+            fi
+          fi
+        fi
+      else
+        echo "❌ 未找到匹配的进程: $search_term"
+      fi
+    else
+      echo "🔧 使用传统ps搜索..."
+      local found_procs=$(ps aux | grep -i "$search_term" | grep -v grep)
+      if [[ -n "$found_procs" ]]; then
+        echo "✅ 找到匹配的进程:"
+        echo "$found_procs"
+      else
+        echo "❌ 未找到匹配的进程: $search_term"
+      fi
+    fi
+    ;;
+esac 

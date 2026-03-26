@@ -1,0 +1,114 @@
+{
+	"title": "Cmd+H, Cmd+Opt+H, and Cmd+Ctrl+H Modifications",
+	"rules": [
+		{
+			"description": "Custom modifications for cmd+h combinations",
+			"manipulators": [
+				{
+					"type": "basic",
+					"from": {
+						"key_code": "h",
+						"modifiers": {
+							"mandatory": [
+								"command"
+							]
+						}
+					},
+					"to": [
+						{
+							"key_code": "delete_or_backspace"
+						}
+					],
+					"conditions": [
+						{
+							"type": "variable_if",
+							"name": "tab pressed",
+							"value": 0
+						}
+					]
+				},
+				{
+					"type": "basic",
+					"from": {
+						"key_code": "h",
+						"modifiers": {
+							"mandatory": [
+								"command",
+								"option"
+							]
+						}
+					},
+					"to": [
+						{
+							"key_code": "delete_or_backspace",
+							"modifiers": [
+								"option"
+							]
+						}
+					],
+					"conditions": [
+						{
+							"type": "variable_if",
+							"name": "tab pressed",
+							"value": 0
+						}
+					]
+				},
+				{
+					"type": "basic",
+					"from": {
+						"key_code": "h",
+						"modifiers": {
+							"mandatory": [
+								"command",
+								"control"
+							]
+						}
+					},
+					"to": [
+						{
+							"key_code": "delete_or_backspace",
+							"modifiers": [
+								"command"
+							]
+						}
+					],
+					"conditions": [
+						{
+							"type": "variable_if",
+							"name": "tab pressed",
+							"value": 0
+						}
+					]
+				},
+				{
+					"type": "basic",
+					"from": {
+						"key_code": "h",  
+						"modifiers": {
+							"mandatory": [
+								"fn",
+								"command"
+							]
+						}
+					},
+					"to": [
+						{
+							"key_code": "delete_or_backspace",
+							"modifiers": [
+								"fn"
+							]  
+						}
+					],
+					"conditions": [
+						{
+							"type": "variable_if",
+							"name": "tab pressed",
+							"value": 0
+						}
+					]
+				}
+			]
+		}
+	]
+}

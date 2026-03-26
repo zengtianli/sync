@@ -1,0 +1,190 @@
+---
+description: ZSH 配置项目上下文 - 基于 Zim 框架的现代化终端配置
+globs: ["**/*.zsh", "**/*.sh", "**/zshrc", "**/zimrc", "**/gitconfig"]
+alwaysApply: true
+---
+
+# ZSH 配置项目上下文
+
+> 📍 项目：`~/Documents/sync/zsh`  
+> 🎯 类型：终端环境配置（dotfiles）
+
+---
+
+## 📁 项目结构
+
+```
+zsh/
+├── zshrc                    # 主配置文件（入口）
+├── zimrc                    # Zim 框架模块配置
+├── gitconfig                # Git 配置
+├── config/                  # 模块化配置目录
+│   ├── conda.zsh           # Conda 环境管理
+│   ├── fzf.zsh             # FZF 核心配置
+│   ├── mappings.zsh        # 键盘映射和快捷键
+│   ├── modern-tools.zsh    # 🔥 现代工具别名（核心）
+│   └── fzf/                # FZF 工具脚本
+│       ├── brew-tools      # Homebrew 包管理
+│       ├── modern-git      # Git 工具箱
+│       ├── process-tools   # 进程管理
+│       └── util            # 工具总览
+├── functions/               # 自定义函数
+│   └── cd_git_root.zsh     # Git 根目录跳转
+└── ssh/                    # SSH 配置
+```
+
+---
+
+## 🤖 推荐 Agent
+
+### 主要 Agent
+
+| 任务 | Agent | 调用方式 |
+|------|-------|---------|
+| Zsh/Shell 配置修改 | **Automation Engineer** | `@~/cursor-shared/agents/L1_global/automation_engineer.md` |
+| Shell 脚本开发 | **Script Engineer** | `@~/cursor-shared/agents/L1_global/script_engineer.md` |
+
+### 调用示例
+
+```
+@~/cursor-shared/agents/L1_global/automation_engineer.md 添加一个新的快捷键映射
+
+@~/cursor-shared/agents/L1_global/script_engineer.md 帮我写一个 FZF 工具脚本
+```
+
+---
+
+## ✨ 核心特性
+
+### 现代工具替代（config/modern-tools.zsh）
+
+| 传统 | 现代 | 别名 |
+|------|------|------|
+| `ls` | `eza` | `ll`, `la`, `lt`, `lg` |
+| `cat` | `bat` | `cat` |
+| `find` | `fd` | `fdf()` |
+| `du` | `dust` | `du` |
+| `df` | `duf` | `df` |
+| `ps` | `procs` | `ps` |
+| `top` | `btop` | `top` |
+| `diff` | `delta` | `diff` |
+| `dig` | `dog` | `dig` |
+| `ping` | `gping` | `ping` |
+
+### 快捷键（config/mappings.zsh）
+
+| 快捷键 | 功能 |
+|--------|------|
+| `Ctrl+G` | LazyGit |
+| `Ctrl+P` | FZF 文件搜索 |
+| `Ctrl+F` | 文件内容搜索 |
+| `Ctrl+T` | 目录切换 |
+| `Ctrl+R` | 历史命令搜索 |
+| `Ctrl+O` | 打开 Finder |
+
+### FZF 工具（config/fzf/）
+
+| 命令 | 功能 |
+|------|------|
+| `util` | 显示所有工具 |
+| `bip` | Homebrew 安装 |
+| `bup` | Homebrew 更新 |
+| `bcp` | Homebrew 清理 |
+| `kp` | 进程管理 |
+| `modern-git` | Git 工具箱 |
+
+---
+
+## 🔧 编辑指南
+
+### 添加新别名
+
+编辑 `config/modern-tools.zsh`：
+
+```zsh
+# 在 "# 现代工具别名" 部分添加
+if command -v new_tool &>/dev/null; then
+    alias nt='new_tool --flag'
+fi
+```
+
+### 添加新快捷键
+
+编辑 `config/mappings.zsh`：
+
+```zsh
+# 定义函数
+new_function() { zle_eval some_command }
+zle -N new_function
+
+# 绑定快捷键
+bindkey '^X' new_function  # Ctrl+X
+```
+
+### 添加新 FZF 工具
+
+1. 创建文件 `config/fzf/new-tool`
+2. 添加可执行权限
+3. 在 `util` 中注册
+
+---
+
+## 🏠 关键路径
+
+```bash
+# 主配置
+ZSH_DIR="$HOME/Documents/sync/zsh"
+
+# 实际链接位置（通常）
+~/.zshrc → $ZSH_DIR/zshrc
+
+# 环境变量（在 zshrc 中设置）
+EDITOR=nvim
+VISUAL=nvim
+ZSH_USE_MODERN_TOOLS=true  # 控制现代工具启用
+ZSH_CONDA_MODE="lazy"       # Conda 加载模式
+```
+
+---
+
+## 📝 修改规范
+
+### 代码风格
+
+1. **缩进**：2 空格
+2. **注释**：使用中文，说明功能
+3. **条件检查**：使用 `command -v` 检测命令存在
+4. **变量引用**：总是使用 `"$var"` 双引号
+
+### 文件组织
+
+- **新功能** → 优先放入 `config/` 对应文件
+- **新 FZF 工具** → 放入 `config/fzf/`
+- **自定义函数** → 放入 `functions/`
+
+### 提交规范
+
+```bash
+git commit -m "feat(modern-tools): 添加 xxx 工具别名"
+git commit -m "fix(fzf): 修复 xxx 预览问题"
+git commit -m "docs: 更新功能汇总文档"
+```
+
+---
+
+## 🔗 相关共享资源
+
+| 资源 | 位置 | 说明 |
+|-----|------|------|
+| Shell 规范 | `~/cursor-shared/rules/shared-shell.mdc` | Shell 编码规范 |
+| 自动化工程师 | `~/cursor-shared/agents/L1_global/automation_engineer.md` | Zsh/Shell 配置 |
+| 脚本工程师 | `~/cursor-shared/agents/L1_global/script_engineer.md` | 脚本开发 |
+| 脚本库 | `/Users/tianli/useful_scripts/execute/` | 可复用脚本 |
+
+---
+
+## 🔄 版本记录
+
+| 版本 | 日期 | 更新 |
+|-----|------|------|
+| v1.0 | 2025-12-10 | 初始版本 |

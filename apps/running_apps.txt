@@ -1,0 +1,104 @@
+86Z3GCJ4MF.com.noodlesoft.HazelHelper.app
+AXVisualSupportAgent.app
+AccessibilityUIServer.app
+Adobe Acrobat.app
+AirPlayUIAgent.app
+AppSSOAgent.app
+BLEUnlock.app
+BackgroundTaskManagementAgent.app
+Batteries.app
+BetterDisplay.app
+Calendar.app
+Canon MF Scan Utility.app
+Cardinal.app
+ClashX Pro.app
+CleanShot X.app
+Clock.app
+ControlCenter.app
+CoreLocationAgent.app
+CoreServicesUIAgent.app
+Dia.app
+DingTalk.app
+Dock.app
+Doubao.app
+FastZip.app
+FindMy.app
+Finder.app
+Ghostty.app
+Hammerspoon.app
+Hazel Notifier.app
+Hazel.app
+Home.app
+Hummingbird.app
+Itsycal.app
+Journal.app
+Karabiner-Core-Service.app
+Karabiner-Menu.app
+Karabiner-NotificationWindow.app
+Keka.app
+Keyboard Maestro.app
+Keychain Circle Notification.app
+Kiro CLI.app
+LogiRightSight.app
+MF Toolbox.app
+MessAuto.app
+Messages.app
+Microsoft PowerPoint.app
+Microsoft Teams.app
+Microsoft Word.app
+MonitorControl.app
+Music.app
+News.app
+Notes.app
+NotificationCenter.app
+PastePal.app
+Peek.app
+PeopleViewService.app
+Photos.app
+Podcasts.app
+PressAndHold.app
+Raycast.app
+Reminders.app
+Safari.app
+Screen Time.app
+Setapp.app
+SetappLauncher.app
+Shadowrocket.app
+Shortcuts Events.app
+Shortcuts.app
+Siri.app
+Software Update.app
+SoftwareUpdateNotificationManager.app
+SogouInput.app
+Spotlight.app
+Stocks.app
+System Settings.app
+SystemUIServer.app
+TabTab.app
+TextEdit.app
+TextInputMenuAgent.app
+TextInputSwitcher.app
+TextSniper.app
+Tips.app
+ToDesk.app
+UIKitSystem.app
+UniversalControl.app
+VoiceMemos.app
+WallpaperAgent.app
+WeChat.app
+Weather.app
+WiFiAgent.app
+WindowManager.app
+XProtect.app
+aTrust.app
+iRightMouse.app
+identityservicesd.app
+imagent.app
+liquiddetectiond.app
+loginwindow.app
+logioptionsplus_agent.app
+magicmenud.app
+rcmd.app
+sociallayerd.app
+tuzlauncher.app
+universalAccessAuthWarn.app

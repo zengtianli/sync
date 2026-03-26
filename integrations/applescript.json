@@ -1,0 +1,10 @@
+{
+	"mcpServers": {
+		"applescript_execute": {
+			"command": "npx",
+			"args": [
+				"@peakmojo/applescript-mcp"
+			]
+		}
+	}
+}

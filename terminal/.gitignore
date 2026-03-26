@@ -1,0 +1,9 @@
+# macOS
+.DS_Store
+
+# 备份文件
+*.toml-*
+
+# yazi 运行时文件
+.yazi/
+

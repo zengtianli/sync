@@ -1,0 +1,16 @@
+{
+	"mcpServers": {
+		"MiniMax": {
+			"command": "uvx",
+			"args": [
+				"minimax-mcp"
+			],
+			"env": {
+				"MINIMAX_API_KEY": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJHcm91cE5hbWUiOiLmm77nlLDlipsiLCJVc2VyTmFtZSI6IuabvueUsOWKmyIsIkFjY291bnQiOiIiLCJTdWJqZWN0SUQiOiIxOTIxMjk5MzU1MzYxMzUwNjAxIiwiUGhvbmUiOiIxNTk1NzE4MzQ0NCIsIkdyb3VwSUQiOiIxOTIxMjk5MzU1MzUyOTYxOTkzIiwiUGFnZU5hbWUiOiIiLCJNYWlsIjoiIiwiQ3JlYXRlVGltZSI6IjIwMjUtMDUtMTMgMTY6MDc6MDMiLCJUb2tlblR5cGUiOjEsImlzcyI6Im1pbmltYXgifQ.AYjVFoFykMZRby-IsLgGwfsgYYajnZCwZveBmg6LiB0Q0OYe5Z5T2gjhnEqNf0sutov_zpNQ0xMrL9QkUCGNhIANpgWGay69ero37v057uGoU0xL8cVy8TnhOxmj_0STII_mtzBTtXYp2sKtRo5sNXkuIr5MmJHWkHxyfW_zAEuQXvRKjAov9x0MQPn6YeqBVjmo6kcT2DYGj_nXWdpUf8yrCEgT57i0ADEkEsHvGu-4uEQzC7J3qZ-mVwvkhmSLgEbFpk4F8TP36WezjQzC53uDisgA6_So-ZFgJS2-4Vn5EWJLWi8_mP2I8SnyqexQkpnybpt4Y2YzlWUobf-K1A",
+				"MINIMAX_MCP_BASE_PATH": "/Users/tianli/Desktop",
+				"MINIMAX_API_HOST": "https://api.minimax.chat",
+				"MINIMAX_API_RESOURCE_MODE": "local"
+			}
+		}
+	}
+}

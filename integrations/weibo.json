@@ -1,0 +1,10 @@
+{
+	"mcpServers": {
+		"weibo": {
+			"command": "npx",
+			"args": [
+				"mcp-server-weibo"
+			]
+		}
+	}
+}

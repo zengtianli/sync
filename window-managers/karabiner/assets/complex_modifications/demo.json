@@ -1,0 +1,22 @@
+{
+	"title": "bendemo",
+	"rules": [
+		{
+			"description": "caps -> command",
+			"manipulators": [
+				{
+					"description": "new wdinow",
+					"type": "basic",
+					"from": {
+						"key_code": "caps_lock"
+					},
+					"to": [
+						{
+							"key_code": "left_command"
+						}
+					]
+				}
+			]
+		}
+	]
+}

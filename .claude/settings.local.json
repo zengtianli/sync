@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C /Users/tianli/Documents/sync log --oneline -20)",
+      "Bash(git -C /Users/tianli/Documents/sync status)",
+      "Bash(git -C /Users/tianli/Documents/sync remote:*)",
+      "Bash(clam --version 2>&1 | head -5)",
+      "Read(//Users/tianli/**)",
+      "Read(//Users/tianli/.config/yabai/**)",
+      "Read(//Users/tianli/.config/yazi/**)",
+      "Read(//Users/tianli/.ssh/**)",
+      "Read(//Users/tianli/.config/**)",
+      "Bash(gh repo:*)",
+      "Bash(gh api:*)",
+      "Bash(claude --version)",
+      "Read(//usr/local/bin/**)",
+      "Read(//opt/homebrew/bin/**)",
+      "Bash(mdfind -name CCSwitcher)",
+      "Bash(nvm alias:*)",
+      "Bash(ln:*)",
+      "Bash(sudo ln:*)"
+    ]
+  }
+}

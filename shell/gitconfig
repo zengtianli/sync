@@ -1,0 +1,30 @@
+[user]
+    email = 34931204+zengtianli@users.noreply.github.com
+    name = tianli
+
+[http]
+	proxy = http://127.0.0.1:7890
+
+[https]
+	proxy = http://127.0.0.1:7890
+
+[filter "lfs"]
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
+
+[init]
+    defaultBranch = main
+
+[core]
+    autocrlf = input
+	pager = delta
+	excludesfile = /Users/tianli/.gitignore_global
+	hooksPath = /Users/tianli/.git-hooks
+[delta]
+	line-numbers = true
+	side-by-side = true
+[alias]
+	dft = \\!GIT_EXTERNAL_DIFF=difft git diff
+	dftl = \\!GIT_EXTERNAL_DIFF=difft git log -p --ext-diff

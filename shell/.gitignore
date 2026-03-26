@@ -1,0 +1,14 @@
+env
+.DS_Store
+zsh_history
+# SSH keys
+ssh/id_*
+!ssh/id_*.pub
+ssh/known_hosts
+
+# API keys and secrets
+.env
+.env.*
+*_secret*
+*_private*
+config/env.zsh
