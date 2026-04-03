@@ -37,3 +37,16 @@ secrets/env
 secrets/streamlit/machine_id_v4
 editors/nvim/tmp/
 *.pem
+
+# Baseline (auto-added by /groom)
+*.py[cod]
+*$py.class
+.venv/
+venv/
+.env
+Thumbs.db
+.idea/
+.vscode/
+*.egg-info/
+dist/
+build/
