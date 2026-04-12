@@ -125,13 +125,14 @@ if [[ "$ZSH_USE_MODERN_TOOLS" == "true" ]]; then
   alias pip=pip3
   alias vim=smart_vim
   alias zzd='"/Applications/Wine Stable.app/Contents/Resources/wine/bin/wine" "/Users/tianli/.wine/drive_c/Program Files (x86)/DingTalkGov/main/current/DingTalkGov.exe"'  # 浙政钉
+  alias brewup="python3 ~/Dev/mactools/scripts/system/brew_maintain.py"  # Homebrew 全量维护
   
   # 文件操作相关
   alias rl="source ~/.zshrc"
   alias of='open -a Finder ./'
   
   # 指定路径的命令
-  alias python3="/Users/tianli/miniforge3/bin/python3"
+  alias python3="/opt/homebrew/bin/python3"
 
   # ============================================================================
   # Phase 3: 高级功能增强
@@ -817,7 +818,7 @@ EOF
   }
 
   # Streamlit
-  alias streamlit="/Users/tianli/miniforge3/bin/streamlit"
+  # streamlit: use `uv run streamlit` in project directories
 
 fi
 

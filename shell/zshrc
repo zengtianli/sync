@@ -18,9 +18,6 @@ if [[ -n $GHOSTTY_RESOURCES_DIR ]]; then
   source "$GHOSTTY_RESOURCES_DIR"/shell-integration/zsh/ghostty-integration
 fi
 
-# Conda 启动时自动激活 base，prompt 显示 (base)
-export ZSH_CONDA_MODE=eager
-
 # Load secrets (API keys)
 [ -f ~/Documents/sync/.secrets/api-keys.zsh ] && source ~/Documents/sync/.secrets/api-keys.zsh
 
