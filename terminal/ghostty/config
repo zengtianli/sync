@@ -1,3 +1,9 @@
-# 新窗口继承当前工作目录
+# Ghostty 配置（sync 管理）
 window-inherit-working-directory = true
+confirm-close-surface = false
 clipboard-paste-protection = false
+background-opacity = 0.90
+unfocused-split-opacity = 0.92
+
+# Quick Terminal (下拉终端)
+keybind = global:ctrl+grave_accent=toggle_quick_terminal

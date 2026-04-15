@@ -30,28 +30,21 @@ prepend_keymap = [
 	{ on = ["x", "m"], run = 'shell "markitdown $1 > ${1%.*}.md" --confirm', desc = "→ Markdown" },
 	{ on = ["x", "d"], run = 'shell "pandoc $1 -o ${1%.*}.docx" --confirm', desc = "→ DOCX" },
 	{ on = ["x", "p"], run = 'shell "pandoc $1 -o ${1%.*}.pdf" --confirm', desc = "→ PDF" },
-	{ on = ["x", "c"], run = 'shell "python3 ~/useful_scripts/execute/raycast/xlsx_to_csv.py $1" --confirm', desc = "Excel → CSV" },
-	{ on = ["x", "x"], run = 'shell "python3 ~/useful_scripts/execute/raycast/csv_to_xlsx.py $1" --confirm', desc = "CSV → Excel" },
+	{ on = ["x", "c"], run = 'shell "uv run --project ~/Dev/doctools ~/Dev/doctools/scripts/data/convert.py xlsx-to-csv $1" --confirm', desc = "Excel → CSV" },
+	{ on = ["x", "x"], run = 'shell "uv run --project ~/Dev/doctools ~/Dev/doctools/scripts/data/convert.py xlsx-from-csv $1" --confirm', desc = "CSV → Excel" },
 
 	# === DOCX 格式化 cf* ===
-	{ on = ["c", "f", "a"], run = 'shell "python3 ~/useful_scripts/execute/raycast/docx_zdwp_all.py $1" --confirm', desc = "ZDWP 全格式化" },
-	{ on = ["c", "f", "t"], run = 'shell "python3 ~/useful_scripts/execute/raycast/docx_text_formatter.py $1" --confirm', desc = "文本修复" },
-	{ on = ["c", "f", "h"], run = 'shell "python3 ~/useful_scripts/execute/raycast/docx_apply_heading_styles.py $1" --confirm', desc = "标题样式" },
-	{ on = ["c", "f", "s"], run = 'shell "python3 ~/useful_scripts/execute/raycast/docx_apply_table_style.py $1" --confirm', desc = "表格样式" },
-
-	# === 读取预览 cr* ===
-	{ on = ["c", "r", "d"], run = 'shell "python3 ~/useful_scripts/execute/tools/read_docx.py $1 | less" --block', desc = "读取 DOCX" },
-	{ on = ["c", "r", "x"], run = 'shell "python3 ~/useful_scripts/execute/tools/read_xlsx.py $1 | less" --block', desc = "读取 Excel" },
+	{ on = ["c", "f", "t"], run = 'shell "uv run --project ~/Dev/doctools ~/Dev/doctools/scripts/document/docx_text_formatter.py $1" --confirm', desc = "文本修复" },
+	{ on = ["c", "f", "a"], run = 'shell "uv run --project ~/Dev/doctools ~/Dev/doctools/scripts/document/docx_apply_template.py $1" --confirm', desc = "套用模板" },
 
 	# === Markdown cm* ===
-	{ on = ["c", "m", "f"], run = 'shell "python3 ~/useful_scripts/execute/raycast/md_formatter.py $1" --confirm', desc = "MD 格式修复" },
-	{ on = ["c", "m", "m"], run = 'shell "python3 ~/useful_scripts/execute/raycast/md_merge.py $@" --confirm', desc = "MD 合并" },
+	{ on = ["c", "m", "f"], run = 'shell "uv run --project ~/Dev/doctools ~/Dev/doctools/scripts/document/md_tools.py format $1" --confirm', desc = "MD 格式修复" },
+	{ on = ["c", "m", "m"], run = 'shell "uv run --project ~/Dev/doctools ~/Dev/doctools/scripts/document/md_tools.py merge $@" --confirm', desc = "MD 合并" },
 
 	# === 跳转 g* ===
-	{ on = ["g", "c"], run = "cd ~/cursor-shared", desc = "总控中心" },
-	{ on = ["g", "u"], run = "cd ~/useful_scripts", desc = "开发部" },
+	{ on = ["g", "u"], run = "cd ~/Dev", desc = "开发工作区" },
 	{ on = ["g", "s"], run = "cd ~/Documents/sync", desc = "配置部" },
-	{ on = ["g", "z"], run = "cd ~/Downloads/zdwp", desc = "水利公司" },
+	{ on = ["g", "z"], run = "cd ~/Work/zdwp", desc = "水利公司" },
 ]
 keymap = [
 	{ on = "<Esc>", run = "escape", desc = "Exit visual mode, clear selected, or cancel search" },
